@@ -2,7 +2,6 @@ package service.magic;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -37,58 +36,6 @@ public class MySqlImpl {
 	 */
 	public void closeDB() throws Exception {
 		st.close();
-	}
-	
-/*
- * ====================================================================================================
- */
-
-	/**
-	 * Translates amazon conversation ID into Watson context
-	 * 
-	 * @param guestID	Amazon conversation ID
-	 * @param guestType 
-	 */
-	public String getContext(String guestID, int guestType) throws Exception {
-		String query = "SELECT watson_ID FROM conv_id WHERE guest_ID = '" + guestID + "' AND guestType = " + guestType + ";";
-		ResultSet rs = st.executeQuery(query);
-
-	    while (rs.next())
-	    	return rs.getString("watson_ID");
-	    return null;
-	}
-	
-	/**
-	 * Inserts the context into the database
-	 * 
-	 * @param guestID	Conversation ID of Guest
-	 * @param context	Watson Context
-	 * @param guestType Alexa / Telegram
-	 */
-	public void setContext(String guestID, String context, int guestType) throws Exception {
-		delAlexaContext();
-		String query = "INSERT INTO conv_id (guest_ID, watson_ID, guestType) VALUES ('" + guestID + "', '" + context + "', " + guestType + ");";
-		st.executeUpdate(query);
-	}
-
-	/**
-	 * Updates the context into the database
-	 * 
-	 * @param guestID	Conversation ID of Guest
-	 * @param context	Watson Context
-	 */
-	public void updContext(String guestID, String context) throws Exception {
-		String query = "UPDATE conv_id SET watson_ID = '" + context + "' WHERE guest_ID = '" + guestID + "';";
-		st.executeUpdate(query);
-	}
-	
-	
-	/**
-	 * Deletes all the contexts into the database
-	 */
-	public void delAlexaContext() throws Exception {
-		String query = "DELETE FROM conv_id WHERE guestType=1;";
-		st.executeUpdate(query);
 	}
 	
 /*
