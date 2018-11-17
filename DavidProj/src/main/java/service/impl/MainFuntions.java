@@ -80,7 +80,13 @@ public class MainFuntions {
 	
 		//=== If HelpIntent, handle with Assistant ===
 		if (args.getJSONObject("request").getJSONObject("intent").getString("name").equals("AMAZON.HelpIntent")) {
-			requestText = "Help";
+			switch(lang) {
+				case Constants.Language.ITALIAN:
+					requestText = "Guidami";
+					break;
+				default:
+					requestText = "Help";
+			}
 		} else {
 			requestText = args.getJSONObject("request").getJSONObject("intent")
 							.getJSONObject("slots").getJSONObject("EveryThingSlot").getString("value");
