@@ -59,9 +59,9 @@ public class Constants {
 		public static final String BASE_URL	= "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/";
 		//public static final String WORKSPACE= WS_EN;
 		
-		public static final String USERNAME	= "16cbe503-f0aa-40e2-96d9-ff2feef9964f";
-		public static final String PASSWORD	= "TaRWVqUvb8Hw";
-		public static final String VERSION	= "2018-02-16";
+		public static final String USERNAME	= "fa11a158-365a-4740-8370-083de8b8bb9d";
+		public static final String PASSWORD	= "7NWoJRdY1WT8";
+		public static final String VERSION	= "2018-09-20";
 	}
 	
 	/**

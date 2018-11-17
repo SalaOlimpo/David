@@ -4,6 +4,9 @@ import static service.impl.WatsonImpl.getWatsonResponse;
 import static service.utils.JsonUtils.buildAlexaResponse;
 import static service.utils.JsonUtils.buildWatsonData;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.json.JSONObject;
 
 import service.magic.MySqlImpl;
@@ -22,6 +25,8 @@ public class MainFuntions {
 	
 	private static final boolean LOG = false;
 
+	private static Map<String, String> alexaContext = new HashMap<>();
+
 	/**
 	 * Method called for the Alexa service
 	 * 
@@ -36,11 +41,12 @@ public class MainFuntions {
 			lang = Constants.Language.ITALIAN;
 		else
 			lang = Constants.Language.ENGLISH;
-		
+
+
 		//=== Retrieving session ID ===
-		MySqlImpl link	= new MySqlImpl(MySQL.DB_DAVID);
 		String sessID	= args.getJSONObject("session").getString("sessionId");
-	
+
+
 		//=== If LaunchRequest, it doesn't contain intents ===
 		if (args.getJSONObject("request").getString("type").equals("LaunchRequest")) {
 			watsonBody = buildWatsonData("");
@@ -49,15 +55,13 @@ public class MainFuntions {
 			JSONObject	watsonResponse	= getWatsonResponse(watsonBody, lang);
 			String		textResponse	= watsonResponse.getJSONObject("output").getJSONArray("text").getString(0);
 			
-			link.setContext(sessID, watsonResponse.getJSONObject("context").toString(), General.ALEXA);
-			link.closeDB();
+			alexaContext.put(sessID, watsonResponse.getJSONObject("context").toString());
 			return buildAlexaResponse(textResponse, false) .toString();
-	
-	
+
 		//=== If StopIntent, close david ===
 		} else if (args.getJSONObject("request").getJSONObject("intent").getString("name").equals("AMAZON.StopIntent")) {
-				link.delAlexaContext();
-				link.closeDB();
+				alexaContext.clear();
+	
 				switch(lang) {
 					case Constants.Language.ITALIAN:
 						return buildAlexaResponse("Chiusura di David", true).toString();
@@ -77,9 +81,12 @@ public class MainFuntions {
 	//-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-
 	
 		//=== Retrieving the contect and logging the query ===
-		String watsonID	= link.getContext(sessID, General.ALEXA);
-		link.logQuery(requestText, General.ALEXA);
-	
+		String watsonID	= alexaContext.getOrDefault(sessID, "{}");
+		if(LOG) {
+			MySqlImpl link = new MySqlImpl(MySQL.DB_DAVID);
+			link.logQuery(requestText, General.ALEXA);
+			link.closeDB();
+		}
 	
 		//=== Building the body for Watson call ===
 		if(watsonID == null)
@@ -103,7 +110,7 @@ public class MainFuntions {
 					textResponse = "No response for this action";
 			}
 		}
-		link.setContext(sessID, watsonResponse.getJSONObject("context").toString(), General.ALEXA);
+		alexaContext.put(sessID, watsonResponse.getJSONObject("context").toString());
 	
 		//=== Execute the relative action ===
 		try {
@@ -141,7 +148,7 @@ public class MainFuntions {
 		JSONObject args		= new JSONObject(payload);
 		String requestText	= args.getJSONObject("input").getString("text");
 
-		int lang			= (args.getJSONObject("lang").getString("language").equals("en") ?
+		int lang			= (args.getString("lang").equals("en") ?
 				Language.ENGLISH :  Language.ITALIAN);
 
 
