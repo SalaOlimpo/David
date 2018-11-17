@@ -42,9 +42,9 @@ public class PaperClient {
         
         switch(lang) {
 			case Constants.Language.ITALIAN:
-				return "Caricati " + credit + " euro a " + username;
+				return (credit > 0 ? "Caricati " + credit : "Detratti " + (-credit)) + " euro a " + username;
 			default:
-				return "Charged " + credit + " euro to " + username;
+				return (credit > 0 ? "Charged " + credit : "Detracted " + (-credit)) + " euro to " + username;
 		}
 	}
 }

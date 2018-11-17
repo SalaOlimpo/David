@@ -23,7 +23,7 @@ import service.utils.Constants.MySQL;
  */
 public class MainFuntions {
 	
-	private static final boolean LOG = false;
+	private static final boolean LOG = true;
 
 	private static Map<String, String> alexaContext = new HashMap<>();
 
@@ -36,7 +36,7 @@ public class MainFuntions {
 		JSONObject	watsonBody	= null;
 		String		requestText;
 		int			lang;
-		
+
 		if(args.getJSONObject("request").getString("locale").startsWith("it"))
 			lang = Constants.Language.ITALIAN;
 		else
@@ -58,6 +58,12 @@ public class MainFuntions {
 			alexaContext.put(sessID, watsonResponse.getJSONObject("context").toString());
 			return buildAlexaResponse(textResponse, false) .toString();
 
+		//=== If Timeout, close david ===
+		} else if (args.getJSONObject("request").getString("type").equals("SessionEndedRequest")) {
+			alexaContext.clear();
+
+			return buildAlexaResponse("", true) .toString();
+
 		//=== If StopIntent, close david ===
 		} else if (args.getJSONObject("request").getJSONObject("intent").getString("name").equals("AMAZON.StopIntent")) {
 				alexaContext.clear();
@@ -68,7 +74,9 @@ public class MainFuntions {
 					default:
 						return buildAlexaResponse("Closing david", true).toString();
 				}
-		}
+
+		
+		} 
 	
 		//=== If HelpIntent, handle with Assistant ===
 		if (args.getJSONObject("request").getJSONObject("intent").getString("name").equals("AMAZON.HelpIntent")) {
