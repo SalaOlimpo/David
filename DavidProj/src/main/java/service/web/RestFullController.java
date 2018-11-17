@@ -23,17 +23,6 @@ public class RestFullController {
     public String test() throws Exception {
 		return "Hello world!";
 	}
-	
-	/**
-	 * Main methods called by alexa (GTT)
-	 * @param payload		Alexa post message
-	 * @return result		The application result
-	 * @throws Exception
-	 */
-	@RequestMapping (value = "/gtt", method = {RequestMethod.POST})
-    public String runGTT(@RequestBody String payload) throws Exception {
-		return MainFuntions.runGTT(payload);
-    }
 
 	/**
 	 * Main methods called by alexa

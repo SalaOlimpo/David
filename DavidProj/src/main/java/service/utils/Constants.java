@@ -53,8 +53,8 @@ public class Constants {
 	 * 	(1) WatsonImpl
 	 */
 	public class Assistant {
-		public static final String WS_IT = "b1d00c03-6401-4d18-aedb-8ed231e9896a";
-		public static final String WS_EN = "8abe5c61-402c-4150-a332-e8ea7f9a6a2d";
+		public static final String WS_IT = "345f36e1-a825-48d4-8400-82f6da88424d";
+		public static final String WS_EN = "c107f10b-d833-4157-84e1-13b8795ec444";
 	
 		public static final String BASE_URL	= "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/";
 		//public static final String WORKSPACE= WS_EN;
