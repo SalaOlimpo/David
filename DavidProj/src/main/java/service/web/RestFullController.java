@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import service.impl.MainFuntions;
+import service.magic.MikrotikAsk;
+import service.utils.Constants.Language;
 
 /**
  * Class used to map request methods.
@@ -21,7 +23,7 @@ public class RestFullController {
 	 */
 	@RequestMapping (value = "/test", method = {RequestMethod.GET})
     public String test() throws Exception {
-		return "Hello world!";
+		return MikrotikAsk.adjustChannels(Language.ENGLISH);
 	}
 
 	/**

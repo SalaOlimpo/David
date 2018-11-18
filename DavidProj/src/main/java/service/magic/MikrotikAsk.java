@@ -152,4 +152,29 @@ public class MikrotikAsk {
 				return "OK! Queues edited";
 		}
 	}
+	
+	/**
+	 * This method changes the traffic limit of users
+	 * @param down	If true the queues are reduced, otherwise they are increased
+	 * @param lang 
+	 */
+	public static String adjustChannels(int lang) throws MikrotikApiException {
+		MikrotikAsk mik = new MikrotikAsk();
+		List<Map<String, String>> res = mik.execCmd("/caps-man/interface/print");
+		
+		for(Map<String, String> mappa : res) {
+			//System.out.println(mappa.get("name") + " - " + mappa.get(".id"));
+			//caps-man interface set channel="2.4 - ch6"
+			//if(mappa.get("dynamic").equals("true"))
+			mik.execCmd("/caps-man/interface/set channel=\"2.4 - ch11\" .id=" + mappa.get(".id"));
+			break;
+		}
+		mik.closeMik();
+		switch(lang) {
+			case Constants.Language.ITALIAN:
+				return "Canali correttamente settati";
+			default:
+				return "All channels are now set";
+		}
+	}
 }
