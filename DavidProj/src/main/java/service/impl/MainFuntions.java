@@ -23,7 +23,7 @@ import service.utils.Constants.MySQL;
  */
 public class MainFuntions {
 	
-	private static final boolean LOG = true;
+	private static final boolean LOG = false;
 
 	private static Map<String, String> alexaContext = new HashMap<>();
 
@@ -43,6 +43,12 @@ public class MainFuntions {
 			lang = Constants.Language.ENGLISH;
 
 
+		if(LOG) {
+			MySqlImpl link = new MySqlImpl(MySQL.DB_DAVID);
+			link.logQuery(requestText, General.ALEXA);
+			link.closeDB();
+		}
+		
 		//=== Retrieving session ID ===
 		String sessID	= args.getJSONObject("session").getString("sessionId");
 
@@ -96,11 +102,7 @@ public class MainFuntions {
 	
 		//=== Retrieving the contect and logging the query ===
 		String watsonID	= alexaContext.getOrDefault(sessID, "{}");
-		if(LOG) {
-			MySqlImpl link = new MySqlImpl(MySQL.DB_DAVID);
-			link.logQuery(requestText, General.ALEXA);
-			link.closeDB();
-		}
+		
 	
 		//=== Building the body for Watson call ===
 		if(watsonID == null)

@@ -9,6 +9,7 @@ import org.springframework.boot.context.web.SpringBootServletInitializer;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
+import service.utils.Constants.ChannelList;
 import service.utils.Constants.GraphList;
 import service.utils.Graph;
 
@@ -33,12 +34,20 @@ public class Application extends SpringBootServletInitializer {
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
         return application.sources(applicationClass);
     }
-    
-    
+
+// ==================================================================================
+   
     // Initializer
     static {
-    	GraphList.graphs = new HashMap<>();
-    	
+    	InitGraph();
+    	InitChannels();
+    }
+
+// ==================================================================================
+	
+	private static void InitGraph() {
+		GraphList.graphs = new HashMap<>();
+		
 		Graph g;
 		g = new Graph("network-backbone", "Y2wHZfFmz");
 		g.panelId.add("18"); g.panelId.add("20"); 
@@ -56,7 +65,7 @@ public class Application extends SpringBootServletInitializer {
 		g.panelId.add("14"); g.panelId.add("16"); 
 		GraphList.graphs.put("Net Resources", g);
 		
-	// -.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.
+		// -.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.
 		
 		g = new Graph("system-health", "YRMRY7Omk");
 		g.panelId.add("2");
@@ -69,7 +78,36 @@ public class Application extends SpringBootServletInitializer {
 		g = new Graph("system-health", "YRMRY7Omk");
 		g.panelId.add("18");
 		GraphList.graphs.put("Mikrotik load", g);
+	}
 
-	// -.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.
-    }
+// ==================================================================================
+
+	private static void InitChannels() {
+		ChannelList.channels = new HashMap<>();
+		
+		ChannelList.channels.put("CAP 1 Est 1", ChannelList.CH_6);
+		ChannelList.channels.put("CAP 1 Est 2", ChannelList.CH_1);
+		ChannelList.channels.put("CAP 2 Est 1", ChannelList.CH_11);
+		ChannelList.channels.put("CAP 3 Est 1", ChannelList.CH_1);
+		ChannelList.channels.put("CAP 3 Est 2", ChannelList.CH_6);
+
+		ChannelList.channels.put("CAP 1 Ovest 1", ChannelList.CH_1);
+		ChannelList.channels.put("CAP 1 Ovest 2", ChannelList.CH_11);
+		ChannelList.channels.put("CAP 1 Ovest 3", ChannelList.CH_6);
+		ChannelList.channels.put("CAP 2 Ovest 1", ChannelList.CH_6);
+		ChannelList.channels.put("CAP 2 Ovest 2", ChannelList.CH_1);
+		ChannelList.channels.put("CAP 3 Ovest 1", ChannelList.CH_1);
+		ChannelList.channels.put("CAP 3 Ovest 2", ChannelList.CH_6);
+		ChannelList.channels.put("CAP 3 Ovest 3", ChannelList.CH_11);
+
+		ChannelList.channels.put("CAP 2 Ovest Imperiale", ChannelList.CH_11);
+		ChannelList.channels.put("CAP SalaOlimpo", ChannelList.CH_11);
+		ChannelList.channels.put("CAP Terra 1", ChannelList.CH_1);
+		ChannelList.channels.put("CAP Terra 2", ChannelList.CH_6);
+		ChannelList.channels.put("CAP Ciabot",	ChannelList.CH_6);
+
+		ChannelList.channels.put("ANT Cappella", ChannelList.CH_1);
+		ChannelList.channels.put("ANT Terrazzo", ChannelList.CH_11);
+		ChannelList.channels.put("ANT Scala",	 ChannelList.CH_11);
+	}
 }

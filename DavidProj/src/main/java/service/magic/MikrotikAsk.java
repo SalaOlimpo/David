@@ -9,6 +9,7 @@ import me.legrange.mikrotik.ApiConnection;
 import me.legrange.mikrotik.ApiConnectionException;
 import me.legrange.mikrotik.MikrotikApiException;
 import service.utils.Constants;
+import service.utils.Constants.ChannelList;
 import service.utils.Constants.Mik;
 
 /**
@@ -93,10 +94,14 @@ public class MikrotikAsk {
 	 * 
 	 */
 	public static String rebootMik(int lang) throws MikrotikApiException {	
-		MikrotikAsk mik = new MikrotikAsk();
-			mik.execCmd("/system/reboot");
-		mik.closeMik();
-
+		new Thread(() -> {
+			try {
+				MikrotikAsk mik = new MikrotikAsk();
+				mik.execCmd("/system/reboot");
+				mik.closeMik();
+			} catch (Exception e) { }
+		}).start();
+		
 		switch(lang) {
 			case Constants.Language.ITALIAN:
 				return "OK! Sto riavviando il Mikrotik...";
@@ -159,22 +164,25 @@ public class MikrotikAsk {
 	 * @param lang 
 	 */
 	public static String adjustChannels(int lang) throws MikrotikApiException {
-		MikrotikAsk mik = new MikrotikAsk();
-		List<Map<String, String>> res = mik.execCmd("/caps-man/interface/print");
+		new Thread(() -> {
+			try {
+				MikrotikAsk mik = new MikrotikAsk();
+				List<Map<String, String>> res = mik.execCmd("/caps-man/interface/print");
+
+				for(Map<String, String> mappa : res) {
+					String chann = ChannelList.channels.getOrDefault(mappa.get("name").split("-")[0], null);
+					
+					if(chann != null)
+						mik.execCmd("/caps-man/interface/set channel=\"" + chann + "\" .id=" + mappa.get(".id"));
+				}
+			} catch (Exception e) { }
+		}).start();
 		
-		for(Map<String, String> mappa : res) {
-			//System.out.println(mappa.get("name") + " - " + mappa.get(".id"));
-			//caps-man interface set channel="2.4 - ch6"
-			//if(mappa.get("dynamic").equals("true"))
-			mik.execCmd("/caps-man/interface/set channel=\"2.4 - ch11\" .id=" + mappa.get(".id"));
-			break;
-		}
-		mik.closeMik();
 		switch(lang) {
 			case Constants.Language.ITALIAN:
-				return "Canali correttamente settati";
+				return "Impostazione canali in corso";
 			default:
-				return "All channels are now set";
+				return "Performing channel setup";
 		}
 	}
 }

@@ -48,6 +48,9 @@ public class TakeAction {
 			}
 			return MachineTest.areReachable(lang);
 		}
+		if(intent.equals("SetupChannels"))
+			return MikrotikAsk.adjustChannels(lang);
+
 		if(intent.equals("NetworkBalance"))
 			return MikrotikAsk.getLoadTotal();
 

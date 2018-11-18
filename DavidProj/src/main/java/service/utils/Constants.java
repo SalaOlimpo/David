@@ -154,4 +154,16 @@ public class Constants {
 		public static Map<String, Graph> graphs;
 	}
 	
+	/**
+	 * Used by
+	 * 	(1) MikrotikAsk
+	 */
+	public static class ChannelList {
+		public static Map<String, String> channels;
+		
+		public static final String CH_1  = "2.4 - ch1";
+		public static final String CH_6  = "2.4 - ch6";
+		public static final String CH_11 = "2.4 - ch11";
+	}
+	
 }
