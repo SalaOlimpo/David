@@ -209,4 +209,11 @@ public class MainFuntions {
 
 		return args.put("content", textResponse).toString();
 	}
+
+	public static String runGoogle(String payload) throws Exception {
+		MySqlImpl link = new MySqlImpl(MySQL.DB_DAVID);
+		link.logQuery(payload, General.ALEXA);
+		link.closeDB();
+		return null;
+	}
 }

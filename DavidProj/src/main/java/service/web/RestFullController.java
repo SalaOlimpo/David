@@ -36,6 +36,17 @@ public class RestFullController {
     public String runAlexa(@RequestBody String payload) throws Exception {
 		return MainFuntions.runAlexa(payload);
     }
+	
+	/**
+	 * Main methods called by alexa
+	 * @param payload		Alexa post message
+	 * @return result		The application result
+	 * @throws Exception
+	 */
+	@RequestMapping (value = "/google", method = {RequestMethod.POST})
+    public String runGoogle(@RequestBody String payload) throws Exception {
+		return MainFuntions.runGoogle(payload);
+    }
 
 	/**
 	 * Main methods called by telegram
