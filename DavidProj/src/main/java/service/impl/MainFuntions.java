@@ -131,22 +131,25 @@ public class MainFuntions {
 		//=== Execute the relative action ===
 		try {
 			String actionResponse = null;
-			if(watsonResponse.getJSONArray("intents").length() > 0)
-				actionResponse = TakeAction.pickUp (
-					watsonResponse.getJSONArray("intents").getJSONObject(0).getString("intent"),
-					watsonResponse.getJSONObject("context"),
-					lang
-				);
-			if(actionResponse != null) textResponse = actionResponse;
-			
 			if(watsonResponse.getJSONObject("output").has("completedIntent"))
 				actionResponse = TakeAction.pickCompleted(
 					watsonResponse.getJSONObject("output").getString("completedIntent"),
 					watsonResponse.getJSONObject("context"),
 					lang
 				);
-			if(actionResponse != null) textResponse = actionResponse;
-	
+
+			if(actionResponse != null)
+				textResponse = actionResponse;
+			else {
+
+				if(watsonResponse.getJSONArray("intents").length() > 0)
+					actionResponse = TakeAction.pickUp (
+						watsonResponse.getJSONArray("intents").getJSONObject(0).getString("intent"),
+						watsonResponse.getJSONObject("context"),
+						lang
+					);
+				if(actionResponse != null) textResponse = actionResponse;
+			}
 		} catch (Exception ex) {
 			return buildAlexaResponse(ex.getMessage(), true) .toString();
 		}
