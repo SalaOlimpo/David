@@ -157,12 +157,7 @@ public class MikrotikAsk {
 				return "OK! Queues edited";
 		}
 	}
-	
-	/**
-	 * This method changes the traffic limit of users
-	 * @param down	If true the queues are reduced, otherwise they are increased
-	 * @param lang 
-	 */
+
 	public static String adjustChannels(int lang) throws MikrotikApiException {
 		new Thread(() -> {
 			try {
@@ -183,6 +178,20 @@ public class MikrotikAsk {
 				return "Impostazione canali in corso";
 			default:
 				return "Performing channel setup";
+		}
+	}
+	public static String unlockMAC(String mac, String cmnt, int lang) throws MikrotikApiException {
+		MikrotikAsk mik = new MikrotikAsk();
+		mik.execCmd("/caps-man/access-list/add  mac-address=\"" + mac +
+				"\" comment=\"" + cmnt + "\" action=\"accept\" place-before=0 ssid-regexp=\"NoCaptive\"");
+		
+		mik.closeMik();
+
+		switch(lang) {
+			case Constants.Language.ITALIAN:
+				return "OK! MAC sbloccato";
+			default:
+				return "OK! MAC unlocked";
 		}
 	}
 }

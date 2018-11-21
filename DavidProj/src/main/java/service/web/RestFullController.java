@@ -23,7 +23,7 @@ public class RestFullController {
 	 */
 	@RequestMapping (value = "/test", method = {RequestMethod.GET})
     public String test() throws Exception {
-		return MikrotikAsk.adjustChannels(Language.ENGLISH);
+		return MikrotikAsk.unlockMAC("11:11:11:11:11:11", "TEST", Language.ITALIAN);
 	}
 
 	/**
@@ -35,17 +35,6 @@ public class RestFullController {
 	@RequestMapping (value = "/alexa", method = {RequestMethod.POST})
     public String runAlexa(@RequestBody String payload) throws Exception {
 		return MainFuntions.runAlexa(payload);
-    }
-	
-	/**
-	 * Main methods called by alexa
-	 * @param payload		Alexa post message
-	 * @return result		The application result
-	 * @throws Exception
-	 */
-	@RequestMapping (value = "/google", method = {RequestMethod.POST})
-    public String runGoogle(@RequestBody String payload) throws Exception {
-		return MainFuntions.runGoogle(payload);
     }
 
 	/**

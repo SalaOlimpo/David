@@ -157,6 +157,12 @@ public class TakeAction {
 			clearContext(context);
 			return res;
 		}
+		if(intent.equals("UnlockMAC")) {
+			String mac	= context.getString("mac");
+			String cmnt	= context.getString("comment");
+								
+			return MikrotikAsk.unlockMAC(mac, cmnt, lang);
+		}
 		return null;
 	}
 	
